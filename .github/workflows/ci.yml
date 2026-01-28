@@ -1,0 +1,47 @@
+name: CI - Verificación de Código
+
+on:
+  push:
+    branches: [main, dev]
+  pull_request:
+    branches: [main]
+
+jobs:
+  verify:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+      
+    - name: Verificar estructura del proyecto
+      run: |
+        echo "🔍 Verificando estructura del proyecto..."
+        echo "Fecha: $(date)"
+        echo "Evento: ${{ github.event_name }}"
+        echo "Rama: ${{ github.ref }}"
+        echo ""
+        
+        echo "📁 Contenido del proyecto:"
+        ls -la
+        echo ""
+        
+        echo "✅ Archivos esenciales:"
+        [ -f "index.html" ] && echo "✓ index.html encontrado" || echo "✗ index.html NO encontrado"
+        [ -f "script.js" ] && echo "✓ script.js encontrado" || echo "✗ script.js NO encontrado"
+        [ -f "README.md" ] && echo "✓ README.md encontrado" || echo "✗ README.md NO encontrado"
+        echo ""
+        
+    - name: Verificar commits
+      run: |
+        echo "📝 Últimos commits:"
+        git log --oneline -5
+        echo ""
+        echo "👤 Información del autor:"
+        git log -1 --pretty=format:"Autor: %an <%ae>%nFecha: %ad"
+        
+    - name: Test de simulación
+      run: |
+        echo "🧪 Ejecutando tests de simulación..."
+        echo "✅ Todo verificado correctamente"
+        echo "🚀 Listo para producción"

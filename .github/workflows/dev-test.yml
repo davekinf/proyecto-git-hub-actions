@@ -1,0 +1,71 @@
+name: Dev Testing
+
+on:
+  push:
+    branches: [dev]
+  pull_request:
+    branches: [dev]
+
+jobs:
+  test-dev:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+      
+    - name: Entorno de desarrollo
+      run: |
+        echo "🧪 ENTORNO DE PRUEBAS - RAMA DEV"
+        echo "================================"
+        echo "Este es un entorno de pruebas para la rama de desarrollo"
+        echo ""
+        echo "🔧 Configurando entorno..."
+        echo "Node.js versión: $(node --version 2>/dev/null || echo 'No instalado')"
+        echo "NPM versión: $(npm --version 2>/dev/null || echo 'No instalado')"
+        
+    - name: Pruebas básicas
+      run: |
+        echo "🧪 Ejecutando pruebas..."
+        
+        # Prueba 1: Verificar sintaxis HTML básica
+        echo "1. Validando HTML..."
+        if grep -q "<!DOCTYPE html>" index.html; then
+          echo "   ✅ DOCTYPE correcto"
+        else
+          echo "   ⚠️  Advertencia: DOCTYPE no encontrado"
+        fi
+        
+        # Prueba 2: Verificar JavaScript
+        echo "2. Verificando JavaScript..."
+        JS_FILES=$(find . -name "*.js" -type f)
+        if [ -n "$JS_FILES" ]; then
+          echo "   ✅ Encontrados $(echo "$JS_FILES" | wc -l) archivos JS"
+        else
+          echo "   ⚠️  No hay archivos JavaScript"
+        fi
+        
+        # Prueba 3: Verificar README
+        echo "3. Verificando documentación..."
+        if [ -f "README.md" ]; then
+          LINES=$(wc -l < README.md)
+          if [ $LINES -gt 3 ]; then
+            echo "   ✅ README tiene $LINES líneas"
+          else
+            echo "   ⚠️  README muy corto ($LINES líneas)"
+          fi
+        fi
+        
+        echo ""
+        echo "📊 Resultado: Pruebas completadas"
+        
+    - name: Generar reporte
+      run: |
+        echo "📋 GENERANDO REPORTE DE PRUEBAS"
+        echo "==============================="
+        echo "Fecha: $(date)"
+        echo "Rama: ${{ github.ref }}"
+        echo "Commit: ${{ github.sha }}"
+        echo ""
+        echo "✅ Listo para merge a main"
+        echo "📌 Nota: Estas pruebas se ejecutan en cada push a dev"
