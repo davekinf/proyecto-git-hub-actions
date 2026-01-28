@@ -1,0 +1,50 @@
+name: Deploy - Solo para Main
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout código
+      uses: actions/checkout@v4
+      
+    - name: Despliegue simulado
+      run: |
+        echo "🚀 INICIANDO DESPLIEGUE A PRODUCCIÓN"
+        echo "===================================="
+        echo "Rama: ${{ github.ref }}"
+        echo "Commit: ${{ github.sha }}"
+        echo "Autor: ${{ github.actor }}"
+        echo "Fecha: $(date)"
+        echo ""
+        
+        # Simular proceso de build
+        echo "📦 Construyendo proyecto..."
+        echo "• Minificando HTML..."
+        echo "• Optimizando JavaScript..."
+        echo "• Generando assets..."
+        sleep 2
+        
+        # Simular despliegue
+        echo "☁️  Desplegando a producción..."
+        echo "• Subiendo a servidor..."
+        echo "• Configurando DNS..."
+        echo "• Invalidando cache..."
+        sleep 2
+        
+        echo ""
+        echo "✅ DESPLIEGUE COMPLETADO"
+        echo "🌍 URL de producción: https://davekinf.github.io/proyecto-git-hub-actions/"
+        echo ""
+        echo "📊 Resumen:"
+        echo "• Archivos procesados: $(find . -type f -name "*.html" -o -name "*.js" -o -name "*.css" | wc -l)"
+        echo "• Tamaño total: $(du -sh . | cut -f1)"
+        
+    - name: Notificar éxito
+      run: |
+        echo "📧 Notificación enviada: Despliegue completado"
+        echo "✅ Todo funcionando correctamente"
